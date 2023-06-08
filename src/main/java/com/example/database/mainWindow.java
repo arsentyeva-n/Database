@@ -333,10 +333,16 @@ public class mainWindow {
         }
     }
 
+    /**
+     * Очистить таблицу
+     */
     public void handleDelAll() {
         usersData.clear();
     }
 
+    /**
+     * Окно о разработчике
+     */
     @FXML
     protected void onAboutButton() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -344,10 +350,22 @@ public class mainWindow {
         alert.setTitle("О разработчике");
         // удаляется подзаголовок
         alert.setHeaderText(null);
-        alert.setContentText("База данных с графическим интерфейсом.");
+        alert.setContentText("Arsentyeva N. V. \nemail: huachensan@gmail.com");
 
         alert.showAndWait();
     }
+
+    @FXML
+    protected void onHotKeyButton() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        // установка заголовка
+        alert.setTitle("Горячие клавиши");
+        // удаляется подзаголовок
+        alert.setHeaderText(null);
+        alert.setContentText("???");
+        alert.showAndWait();
+    }
+
 
     @FXML
     void initialize() {

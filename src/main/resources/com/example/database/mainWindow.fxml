@@ -29,7 +29,7 @@
                 <Menu mnemonicParsing="false" text="Справка">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#onAboutButton" text="О нас"/>
-                        <MenuItem mnemonicParsing="false" text="Горячие клавиши"/>
+                        <MenuItem mnemonicParsing="false" onAction="#onHotKeyButton" text="Горячие клавиши"/>
                     </items>
                 </Menu>
             </menus>

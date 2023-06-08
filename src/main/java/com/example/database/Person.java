@@ -9,6 +9,9 @@ import java.io.Serializable;
 
 /**
  * Класс человек для абонента
+ * Интерфейс Serializable в Java используется для того, чтобы указать,
+ * что объект может быть сериализован - то есть преобразован в последовательность
+ * байтов и сохранен в файле.
  */
 public class Person implements Serializable {
 
@@ -25,8 +28,7 @@ public class Person implements Serializable {
     private Double payment; // Оплата за год
 
 
-    public Person(String secondName, String firstName, String middleName, String number,
-                  String personalAccount, Double payment) {
+    public Person(String secondName, String firstName, String middleName, String number, String personalAccount, Double payment) {
         setSecondName(secondName);
         setFirstName(firstName);
         setMiddleName(middleName);
