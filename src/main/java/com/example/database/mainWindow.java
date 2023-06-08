@@ -6,12 +6,18 @@ package com.example.database;
 
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
 
@@ -67,6 +73,8 @@ public class mainWindow {
     private Button btn_del_person;
     @FXML
     private Button btn_search_person;
+    @FXML
+    private AnchorPane mainAnchorPane;
 
     /**
      * Инициализация таблицы
@@ -91,7 +99,6 @@ public class mainWindow {
         db_payment.setCellFactory(TextFieldTableCell.forTableColumn((StringConverter<Double>) new DoubleStringConverter()));
 
     }
-
 
 
     @FXML
@@ -170,11 +177,12 @@ public class mainWindow {
             label_error.setText("Сумма оплаты должна быть не пустой и неотрицательной");
         }
     }
+
     final String color_error = "#ffc3bf";
 
     @FXML
     /**Добавление в бд */
-    void handleAddUserAction(MouseEvent event) {
+    void handleAddUserAction() {
         try {
             // Окрас полей в белый цвет
             field_payment.setStyle("-fx-control-inner-background: #ffffff");
@@ -362,10 +370,31 @@ public class mainWindow {
         alert.setTitle("Горячие клавиши");
         // удаляется подзаголовок
         alert.setHeaderText(null);
-        alert.setContentText("???");
+        alert.setContentText("Добавить -> ENTER\nОткрыть -> CTRL + O\nСохранить -> CTRL + S\nСправка -> F1");
         alert.showAndWait();
     }
 
+    /**
+     * Установка горячих клавиш
+     */
+    @FXML
+    private void setHotKeys() {
+        // данный метод привязан к mainAnchorPane с помощью fx:id
+        Stage stage = (Stage) mainAnchorPane.getScene().getWindow();
+        Scene scene = stage.getScene();
+        scene.setOnKeyPressed(event -> {
+            if (event.isControlDown() && event.getCode() == KeyCode.O) {
+                handleOpenFileAction();
+            } else if (event.isControlDown() && event.getCode() == KeyCode.S) {
+                handleSaveFileAction();
+            } else if (event.getCode() == KeyCode.F1) {
+                onHotKeyButton();
+            } else if (event.getCode() == KeyCode.ENTER) {
+                handleAddUserAction();
+            }
+        });
+
+    }
 
     @FXML
     void initialize() {
