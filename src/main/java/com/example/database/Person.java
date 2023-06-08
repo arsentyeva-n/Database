@@ -42,7 +42,8 @@ public class Person implements Serializable {
     }
 
     public void setSecondName(String secondName) {
-        if (secondName.equals("")) throw new IllegalArgumentException("Фамилия не может быть пустой");
+        if (!secondName.matches("^[a-zA-Zа-яА-ЯёЁ]+$"))
+            throw new IllegalArgumentException("Фамилия введена некорректно");
         this.secondName = secondName;
     }
 
@@ -51,7 +52,8 @@ public class Person implements Serializable {
     }
 
     public void setFirstName(String firstName) {
-        if (firstName.equals("")) throw new IllegalArgumentException("Имя не может быть пустым");
+        if (!firstName.matches("^[a-zA-Zа-яА-ЯёЁ]+$"))
+            throw new IllegalArgumentException("Имя введено некорректно");
         this.firstName = firstName;
     }
 
@@ -60,6 +62,8 @@ public class Person implements Serializable {
     }
 
     public void setMiddleName(String middleName) {
+        if (!middleName.matches("^[a-zA-Zа-яА-ЯёЁ]+$"))
+            throw new IllegalArgumentException("Отчество введено некорректно");
         this.middleName = middleName;
     }
 

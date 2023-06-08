@@ -6,12 +6,10 @@ package com.example.database;
 
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -34,10 +32,14 @@ public class mainWindow {
      */
     @FXML
     private TableView<Person> table_database;
+
+    /**
+     * Создание списка, который оповещает об изменениях
+     */
     private ObservableList<Person> usersData = FXCollections.observableArrayList();
 
     /**
-     * Инициализация колонок
+     * Инициализация колонок для каждого поля объекта Person
      */
     @FXML
     private TableColumn<Person, String> db_PersonalAccount;
@@ -66,13 +68,7 @@ public class mainWindow {
     @FXML
     private TextField field_second_name;
     @FXML
-    private Label label_error;
-    @FXML
-    private Button btn_add_person;
-    @FXML
-    private Button btn_del_person;
-    @FXML
-    private Button btn_search_person;
+    private Label label_error;      // поле состояния
     @FXML
     private AnchorPane mainAnchorPane;
 
@@ -108,9 +104,10 @@ public class mainWindow {
             Person person = table_database.getSelectionModel().getSelectedItem();
             person.setSecondName(personStringCellEditEvent.getNewValue());
             int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
+            // обновляем данные в списке usersData
             usersData.set(selectedIndex, person);
         } catch (IllegalArgumentException e) {
-            label_error.setText("Фамилия не может быть пустой");
+            label_error.setText("Фамилия введена некорректно");
         }
     }
 
@@ -118,13 +115,12 @@ public class mainWindow {
 /**Редактирование ячеек Имени */
     private void onEditFirstName(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
         try {
-
             Person person = table_database.getSelectionModel().getSelectedItem();
             person.setFirstName(personStringCellEditEvent.getNewValue());
             int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
             usersData.set(selectedIndex, person);
         } catch (IllegalArgumentException e) {
-            label_error.setText("Имя не может быть пустым");
+            label_error.setText("Имя введено некорректно");
         }
     }
 
@@ -181,7 +177,7 @@ public class mainWindow {
     final String color_error = "#ffc3bf";
 
     @FXML
-    /**Добавление в бд */
+    /**Добавление в абонента бд */
     void handleAddUserAction() {
         try {
             // Окрас полей в белый цвет
@@ -190,27 +186,34 @@ public class mainWindow {
             field_second_name.setStyle("-fx-control-inner-background: #ffffff");
             field_personalAccount.setStyle("-fx-control-inner-background: #ffffff");
             field_first_name.setStyle("-fx-control-inner-background: #ffffff");
+            field_middle_name.setStyle("-fx-control-inner-background: #ffffff");
             label_error.setText("Строка состояния");
 
             if (field_payment.getText().equals(""))
                 throw new IllegalArgumentException("Сумма оплаты должна быть не пустой и неотрицательной");
 
+            // добавление нового объекта в ObservableList
             usersData.add(new Person(field_second_name.getText(), field_first_name.getText(), field_middle_name.getText(),
                     field_number.getText(), field_personalAccount.getText(), Double.parseDouble(field_payment.getText())));
         } catch (IllegalArgumentException e) {
             // При схватывании исключения выводится сообщение этого исключения и поле окрасывается в красный цвет
-            if (e.getMessage() == "Имя не может быть пустым") {
+            if (e.getMessage() == "Имя введено некорректно") {
+                label_error.setText(e.getMessage());
                 field_first_name.setStyle("-fx-control-inner-background: " + color_error);
             }
-            if (e.getMessage() == "Фамилия не может быть пустой") {
+            if (e.getMessage() == "Фамилия введена некорректно") {
+                label_error.setText(e.getMessage());
                 field_second_name.setStyle("-fx-control-inner-background: " + color_error);
+            }
+            if (e.getMessage() == "Отчество введено некорректно") {
+                label_error.setText(e.getMessage());
+                field_middle_name.setStyle("-fx-control-inner-background: " + color_error);
             }
             if (e.getMessage() == "Номер должен содержать 11 цифр и начинаться с 7 или 8") {
                 label_error.setText(e.getMessage());
                 field_number.setStyle("-fx-control-inner-background: " + color_error);
             }
             if (e.getMessage() == "Лицевой счёт должен содержать 13 цифр") {
-                label_error.setText(e.getMessage());
                 label_error.setText(e.getMessage());
                 field_personalAccount.setStyle("-fx-control-inner-background: " + color_error);
             }
@@ -228,7 +231,6 @@ public class mainWindow {
     private void handleDelUserAction(MouseEvent event) {
         // Получаем выбранного человека из таблицы
         Person selectedPerson = table_database.getSelectionModel().getSelectedItem();
-
         if (selectedPerson != null) {
             // Удаляем выбранного человека из списка
             usersData.remove(selectedPerson);
@@ -239,46 +241,34 @@ public class mainWindow {
     /**Поиск сотрудника в списке */
     private void handleFindPerson() {
         String text = field_search_data.getText();
-        boolean flag = false;
-        if (!text.equals("") && usersData.size() > 0) {
+        if (text.equals("")) label_error.setText("Нет параметра для поиска");
+        else if (!text.equals("")) {
             for (int i = 0; i < usersData.size(); i++) {
-                if (flag == false && usersData.get(i).getSecondName().equals(text)) {
-                    flag = true;
+                if (usersData.get(i).getSecondName().equals(text)) {
                     table_database.getSelectionModel().select(i);
                     break;
                 }
-                if (flag == false && usersData.get(i).getFirstName().equals(text)) {
-                    flag = true;
+                if (usersData.get(i).getFirstName().equals(text)) {
                     table_database.getSelectionModel().select(i);
                     break;
                 }
-                if (flag == false && usersData.get(i).getMiddleName().equals(text)) {
-                    flag = true;
+                if (usersData.get(i).getMiddleName().equals(text)) {
                     table_database.getSelectionModel().select(i);
                     break;
                 }
-                if (flag == false && usersData.get(i).getPersonalAccount().equals(text)) {
-                    flag = true;
+                if (usersData.get(i).getPersonalAccount().equals(text)) {
                     table_database.getSelectionModel().select(i);
                     break;
                 }
-                if (flag == false && usersData.get(i).getNumber().equals(text)) {
-                    flag = true;
+                if (usersData.get(i).getNumber().equals(text)) {
                     table_database.getSelectionModel().select(i);
                     break;
                 }
-                if (flag == false && usersData.get(i).getPayment().equals(text)) {
-                    flag = true;
-                    table_database.getSelectionModel().select(i);
-                    break;
-                }
-            }
-            if (flag == false) {
-                label_error.setText("Абонент не найден");
-                table_database.getSelectionModel().clearSelection();
             }
         } else {
-            label_error.setText("Нет параметра для поиска");
+            label_error.setText("Абонент не найден");
+            // снятия выделения с выбранных элементов в таблице
+            table_database.getSelectionModel().clearSelection();
         }
     }
 
@@ -342,7 +332,7 @@ public class mainWindow {
     }
 
     /**
-     * Очистить таблицу
+     * Очистить бд
      */
     public void handleDelAll() {
         usersData.clear();
@@ -359,7 +349,6 @@ public class mainWindow {
         // удаляется подзаголовок
         alert.setHeaderText(null);
         alert.setContentText("Arsentyeva N. V. \nemail: huachensan@gmail.com");
-
         alert.showAndWait();
     }
 
