@@ -93,48 +93,83 @@ public class mainWindow {
     }
 
 
+
     @FXML
     /**Редактирование ячеек Фамилии */
     private void onEditSecondName(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
-        Person person = table_database.getSelectionModel().getSelectedItem();
-        person.setSecondName(personStringCellEditEvent.getNewValue());
+        try {
+            Person person = table_database.getSelectionModel().getSelectedItem();
+            person.setSecondName(personStringCellEditEvent.getNewValue());
+            int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
+            usersData.set(selectedIndex, person);
+        } catch (IllegalArgumentException e) {
+            label_error.setText("Фамилия не может быть пустой");
+        }
     }
 
     @FXML
-    /**Редактирование ячеек Имени */
+/**Редактирование ячеек Имени */
     private void onEditFirstName(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
-        Person person = table_database.getSelectionModel().getSelectedItem();
-        person.setFirstName(personStringCellEditEvent.getNewValue());
+        try {
+
+            Person person = table_database.getSelectionModel().getSelectedItem();
+            person.setFirstName(personStringCellEditEvent.getNewValue());
+            int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
+            usersData.set(selectedIndex, person);
+        } catch (IllegalArgumentException e) {
+            label_error.setText("Имя не может быть пустым");
+        }
     }
 
     @FXML
-    /**Редактирование ячеек Отчества */
+/**Редактирование ячеек Отчества */
     private void onEditMiddleName(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
         Person person = table_database.getSelectionModel().getSelectedItem();
         person.setMiddleName(personStringCellEditEvent.getNewValue());
+        int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
+        usersData.set(selectedIndex, person);
+
     }
 
     @FXML
-    /**Редактирование ячеек Номера */
+/**Редактирование ячеек Номера */
     private void onEditNumber(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
-        Person person = table_database.getSelectionModel().getSelectedItem();
-        person.setMiddleName(personStringCellEditEvent.getNewValue());
+        try {
+            Person person = table_database.getSelectionModel().getSelectedItem();
+            person.setNumber(personStringCellEditEvent.getNewValue());
+            int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
+            usersData.set(selectedIndex, person);
+        } catch (IllegalArgumentException e) {
+            label_error.setText("Номер должен начинаться с 7 или 8 и содержать 11 символов");
+        }
+
     }
 
     @FXML
-    /**Редактирование ячеек Лицевого счёта */
+/**Редактирование ячеек Лицевого счёта */
     private void onEditPersonalAccount(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
-        Person person = table_database.getSelectionModel().getSelectedItem();
-        person.setMiddleName(personStringCellEditEvent.getNewValue());
+        try {
+            Person person = table_database.getSelectionModel().getSelectedItem();
+            person.setPersonalAccount(personStringCellEditEvent.getNewValue());
+            int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
+            usersData.set(selectedIndex, person);
+        } catch (IllegalArgumentException e) {
+            label_error.setText("Лицевой символ состоит из 13 числовых символов");
+        }
     }
 
     @FXML
-    /**Редактирование ячеек Оплата за год */
+/**Редактирование ячеек Оплата за год */
     private void onEditPayment(TableColumn.CellEditEvent<Person, Double> personStringCellEditEvent) {
-        Person person = table_database.getSelectionModel().getSelectedItem();
-        person.setPayment(personStringCellEditEvent.getNewValue());
+        try {
+            Person person = table_database.getSelectionModel().getSelectedItem();
+            person.setPayment(personStringCellEditEvent.getNewValue());
+            int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
+            usersData.set(selectedIndex, person);
+        } catch (IllegalArgumentException e) {
+            label_error.setText("Сумма оплаты должна быть не пустой и неотрицательной");
+        }
     }
-
     final String color_error = "#ffc3bf";
 
     @FXML
