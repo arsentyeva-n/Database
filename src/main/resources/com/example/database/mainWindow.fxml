@@ -94,7 +94,8 @@
                 <Button fx:id="btn_del_person" mnemonicParsing="false" onMouseClicked="#handleDelUserAction" prefHeight="19.0" prefWidth="89.0" text="Удалить" />
                 <Button fx:id="btn_del_all" mnemonicParsing="false" onMouseClicked="#handleDelAll" prefHeight="19.0" prefWidth="89.0" text="Удалить все" />
                 <Button fx:id="btn_search_person" mnemonicParsing="false" onMouseClicked="#handleFindPerson" prefHeight="26.0" prefWidth="61.0" text="Найти" />
-                <TextField fx:id="field_search_data" promptText="Данные для поиска" />
+                <TextField fx:id="field_search_data" prefHeight="26.0" prefWidth="170.0" promptText="Введите лицевой счёт" />
+            <Label fx:id="label_Search" text="Данные для поиска" />
             </items>
         </ToolBar>
         <ToolBar disable="true" layoutX="-18.0" layoutY="606.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="33.0" prefWidth="764.0">

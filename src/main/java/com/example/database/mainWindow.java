@@ -114,7 +114,7 @@ public class mainWindow {
                 case "db_number":
                     person.setNumber((String) newValue);
                     break;
-                case "db_personalAccount":
+                case "db_PersonalAccount":
                     person.setPersonalAccount((String) newValue);
                     break;
                 case "db_payment":
@@ -193,7 +193,7 @@ public class mainWindow {
     }
 
     @FXML
-    /**Поиск сотрудника в списке */
+    /**Поиск абонента в списке по лицевому счёту */
     private void handleFindPerson() {
         String text = field_search_data.getText();
         if (text.equals("")) label_error.setText("Нет параметра для поиска");

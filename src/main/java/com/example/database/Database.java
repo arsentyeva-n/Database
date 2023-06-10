@@ -47,9 +47,7 @@ public class Database {
         return observableList;
     }
 
-    /**
-     * Поиск сотрудника в списке
-     */
+    /**  Поиск абонента в списке по лицевому счёту */
     public Integer findPerson(String text) {        // принимает искомое значение
         int index = -1;
         for (int i = 0; i < getUserData().size(); i++) {
