@@ -85,83 +85,50 @@ public class mainWindow {
 
     }
 
+    /**
+     * Изменение данных в ячейках таблицы, event - параметр метода,
+     * представляющий объект события изменения ячейки таблицы
+     * Здесь тип значения в ячейке таблицы не определен, так как он может быть различным для разных колонок
+     */
     @FXML
-    /**Редактирование ячеек Фамилии */
-    private void onEditSecondName(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
+    private void onEditCell(TableColumn.CellEditEvent<Person, ?> event) {
+        label_error.setText("Строка состояния");
         try {
-            // Создаем новый объект для выбранной строчки
+            // получение выбранного объекта Person из таблицы по индексу выбранной строки
             Person person = table_database.getSelectionModel().getSelectedItem();
-            // принимаем новые значения в таблице ( в данном случае фамилия)
-            person.setSecondName(personStringCellEditEvent.getNewValue());
-            // запоминаем адрес
-            int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
-            // обновляем данные в списке usersData
-            db.getUserData().set(selectedIndex, person);
-        } catch (IllegalArgumentException e) {
-            label_error.setText("Фамилия введена некорректно");
-        }
-    }
-
-    @FXML
-/**Редактирование ячеек Имени */
-    private void onEditFirstName(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
-        try {
-            Person person = table_database.getSelectionModel().getSelectedItem();
-            person.setFirstName(personStringCellEditEvent.getNewValue());
-            int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
-            db.getUserData().set(selectedIndex, person);
-        } catch (IllegalArgumentException e) {
-            label_error.setText("Имя введено некорректно");
-        }
-    }
-
-    @FXML
-/**Редактирование ячеек Отчества */
-    private void onEditMiddleName(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
-        Person person = table_database.getSelectionModel().getSelectedItem();
-        person.setMiddleName(personStringCellEditEvent.getNewValue());
-        int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
-        db.getUserData().set(selectedIndex, person);
-
-    }
-
-    @FXML
-/**Редактирование ячеек Номера */
-    private void onEditNumber(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
-        try {
-            Person person = table_database.getSelectionModel().getSelectedItem();
-            person.setNumber(personStringCellEditEvent.getNewValue());
+            // получение колонки таблицы, которая была отредактирована
+            TableColumn<Person, ?> column = event.getTableColumn();
+            // получение нового значения из ячейки таблицы
+            Object newValue = event.getNewValue();
+            // проверка идентификатора колонки и обновление соответствующего поля объекта Person
+            switch (column.getId()) {
+                case "db_second_name":
+                    person.setSecondName((String) newValue);
+                    break;
+                case "db_first_name":
+                    person.setFirstName((String) newValue);
+                    break;
+                case "db_middle_name":
+                    person.setMiddleName((String) newValue);
+                    break;
+                case "db_number":
+                    person.setNumber((String) newValue);
+                    break;
+                case "db_personalAccount":
+                    person.setPersonalAccount((String) newValue);
+                    break;
+                case "db_payment":
+                    person.setPayment((Double) newValue);
+                    break;
+                default:
+                    break;
+            }
+            // получение индекса выбранной строки в таблице и обновление данных в бд
             int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
             db.getUserData().set(selectedIndex, person);
         } catch (IllegalArgumentException e) {
-            label_error.setText("Номер должен начинаться с 7 или 8 и содержать 11 символов");
-        }
-
-    }
-
-    @FXML
-/**Редактирование ячеек Лицевого счёта */
-    private void onEditPersonalAccount(TableColumn.CellEditEvent<Person, String> personStringCellEditEvent) {
-        try {
-            Person person = table_database.getSelectionModel().getSelectedItem();
-            person.setPersonalAccount(personStringCellEditEvent.getNewValue());
-            int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
-            db.getUserData().set(selectedIndex, person);
-        } catch (IllegalArgumentException e) {
-            label_error.setText("Лицевой символ состоит из 13 числовых символов");
-        }
-    }
-
-    @FXML
-/**Редактирование ячеек Оплата за год */
-    private void onEditPayment(TableColumn.CellEditEvent<Person, Double> personStringCellEditEvent) {
-        try {
-            Person person = table_database.getSelectionModel().getSelectedItem();
-            person.setPayment(personStringCellEditEvent.getNewValue());
-            int selectedIndex = table_database.getSelectionModel().getSelectedIndex();
-            db.getUserData().set(selectedIndex, person);
-        } catch (IllegalArgumentException e) {
-            label_error.setText("Сумма оплаты должна быть не пустой и неотрицательной");
+            // исключения отображаются в строке состояния
+            label_error.setText(e.getMessage());
         }
     }
 
@@ -188,31 +155,33 @@ public class mainWindow {
                     field_number.getText(), field_personalAccount.getText(), Double.parseDouble(field_payment.getText())));
         } catch (IllegalArgumentException e) {
             label_error.setText(e.getMessage()); // Сообщение о вброшенных исключениях
-            // При схватывании исключения выводится сообщение этого исключения и поле окрасывается в красный цвет
-            if (e.getMessage() == "Имя введено некорректно") {
-                field_first_name.setStyle("-fx-control-inner-background: " + color_error);
-            }
-            if (e.getMessage() == "Фамилия введена некорректно") {
-                field_second_name.setStyle("-fx-control-inner-background: " + color_error);
-            }
-            if (e.getMessage() == "Отчество введено некорректно") {
-                field_middle_name.setStyle("-fx-control-inner-background: " + color_error);
-            }
-            if (e.getMessage() == "Номер должен содержать 11 цифр и начинаться с 7 или 8") {
-                field_number.setStyle("-fx-control-inner-background: " + color_error);
-            }
-            if (e.getMessage() == "Лицевой счёт должен содержать 13 цифр") {
-                field_personalAccount.setStyle("-fx-control-inner-background: " + color_error);
-            }
-            if (e.getMessage() == "Сумма оплаты должна быть не пустой и неотрицательной") {
-                field_payment.setStyle("-fx-control-inner-background: " + color_error);
+            // При схватывании исключения выводится сообщение этого исключения и поле окрашывается в красный цвет
+            switch (e.getMessage()) {
+                case "Имя введено некорректно":
+                    field_first_name.setStyle("-fx-control-inner-background: " + color_error);
+                    break;
+                case "Фамилия введена некорректно":
+                    field_second_name.setStyle("-fx-control-inner-background: " + color_error);
+                    break;
+                case "Отчество введено некорректно":
+                    field_middle_name.setStyle("-fx-control-inner-background: " + color_error);
+                    break;
+                case "Номер должен содержать 11 цифр и начинаться с 7 или 8":
+                    field_number.setStyle("-fx-control-inner-background: " + color_error);
+                    break;
+                case "Лицевой счёт должен содержать 13 цифр":
+                    field_personalAccount.setStyle("-fx-control-inner-background: " + color_error);
+                    break;
+                case "Сумма оплаты должна быть не пустой и неотрицательной":
+                    field_payment.setStyle("-fx-control-inner-background: " + color_error);
+                    break;
+                default:
+                    break;
             }
         }
     }
 
-    /**
-     * Удаление из бд
-     **/
+    /** Удаление из бд */
     @FXML
     private void handleDelUserAction(MouseEvent event) {
         // Получаем выбранного человека из таблицы

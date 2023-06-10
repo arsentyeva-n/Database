@@ -80,12 +80,12 @@
         </Pane>
         <TableView fx:id="table_database" layoutY="198.0" prefHeight="374.0" prefWidth="747.0">
             <columns>
-                <TableColumn fx:id="db_second_name" onEditCommit="#onEditSecondName" prefWidth="125.0" text="Фамилия" />
-                <TableColumn fx:id="db_first_name" onEditCommit="#onEditFirstName" prefWidth="125.0" text="Имя" />
-                <TableColumn fx:id="db_middle_name" minWidth="9.60003662109375" onEditCommit="#onEditMiddleName" prefWidth="123.19999694824219" text="Отчество" />
-                <TableColumn fx:id="db_number" minWidth="8.0" onEditCommit="#onEditNumber" prefWidth="128.79998779296875" text="Номер" />
-                <TableColumn fx:id="db_PersonalAccount" onEditCommit="#onEditPersonalAccount" prefWidth="125.0" text="Лицевой счёт" />
-                <TableColumn fx:id="db_payment" onEditCommit="#onEditPayment" prefWidth="115.0" text="Оплата за год" />
+                <TableColumn fx:id="db_second_name" onEditCommit="#onEditCell" prefWidth="125.0" text="Фамилия" />
+                <TableColumn fx:id="db_first_name" onEditCommit="#onEditCell" prefWidth="125.0" text="Имя" />
+                <TableColumn fx:id="db_middle_name" minWidth="9.60003662109375" onEditCommit="#onEditCell" prefWidth="123.19999694824219" text="Отчество" />
+                <TableColumn fx:id="db_number" minWidth="8.0" onEditCommit="#onEditCell" prefWidth="128.79998779296875" text="Номер" />
+                <TableColumn fx:id="db_PersonalAccount" onEditCommit="#onEditCell" prefWidth="125.0" text="Лицевой счёт" />
+                <TableColumn fx:id="db_payment" onEditCommit="#onEditCell" prefWidth="115.0" text="Оплата за год" />
             </columns>
         </TableView>
         <ToolBar layoutX="-9.0" layoutY="572.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="36.0" prefWidth="756.0">
