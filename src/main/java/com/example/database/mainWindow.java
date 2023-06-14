@@ -12,9 +12,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
+
+import java.io.File;
 
 
 /**
@@ -211,7 +214,12 @@ public class mainWindow {
     @FXML
     private void handleOpenFileAction() {
         try {
-            db.open();
+            FileChooser fileChooser = new FileChooser();
+            // Устанавливаем ограничения на TXT Format
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT Files", "*.txt"));
+            // Открываем openDialog
+            File filename = fileChooser.showOpenDialog(null);
+            db.open(filename);
             table_database.setItems(db.getUserData());
         } catch (Exception ex) {
             label_error.setText("Во время открытия файла произошла ошибка");
@@ -222,7 +230,12 @@ public class mainWindow {
     @FXML
     private void handleSaveFileAction() {
         try {
-            db.saveFile();
+            FileChooser fileChooser = new FileChooser();
+            // Устанавливаем ограничения на TXT Format
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT Files", "*.txt"));
+            // Открываем saveDialog
+            File filename = fileChooser.showSaveDialog(null);
+            db.saveFile(filename);
         } catch (Exception ex) {
             label_error.setText("Во время сохранения файла произошла ошибка");
         }

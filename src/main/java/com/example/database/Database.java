@@ -62,26 +62,16 @@ public class Database {
     /**
      * Сохранение в файл
      */
-    public void saveFile() throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        // Устанавливаем ограничения на TXT Format
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT Files", "*.txt"));
-        // Открываем saveDialog
-        File filename = fileChooser.showSaveDialog(null);
+    public void saveFile(File filename) throws IOException {
         ObjectOutputStream input = new ObjectOutputStream(new FileOutputStream(filename));
         // записываем список
-        input.writeObject(toArrayList(usersData));
+        input.writeObject(toArrayList(usersData)); // Цикл, который перебирает todo
     }
 
     /**
      * Открытие списка из файла, возвращает нвоый открытый список для отображения в table view
      */
-    public ObservableList<Person> open() throws IOException, ClassNotFoundException {
-        FileChooser fileChooser = new FileChooser();
-        // Устанавливаем ограничения на TXT Format
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT Files", "*.txt"));
-        // Открываем openDialog
-        File filename = fileChooser.showOpenDialog(null);
+    public ObservableList<Person> open(File filename) throws IOException, ClassNotFoundException {
         ObjectInputStream output = new ObjectInputStream(new FileInputStream(filename));
         usersData = toObservableList((ArrayList<Person>) output.readObject());
         return usersData;

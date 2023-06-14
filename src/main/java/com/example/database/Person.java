@@ -27,6 +27,8 @@ public class Person implements Serializable {
 
     private Double payment; // Оплата за год
 
+    private String regexForFIO = "^[a-zA-Zа-яА-ЯёЁ]+$";
+
     /**
      * @param secondName Фамилия
      * @param firstName Имя
@@ -51,7 +53,7 @@ public class Person implements Serializable {
 
     /** Новое значение в поле Фамилия*/
     public void setSecondName(String secondName) {
-        if (!secondName.matches("^[a-zA-Zа-яА-ЯёЁ]+$"))
+        if (!secondName.matches(regexForFIO))
             throw new IllegalArgumentException("Фамилия введена некорректно");
         this.secondName = secondName;
     }
@@ -63,7 +65,7 @@ public class Person implements Serializable {
 
     /** Новое значение в поле Имя*/
     public void setFirstName(String firstName) {
-        if (!firstName.matches("^[a-zA-Zа-яА-ЯёЁ]+$"))
+        if (!firstName.matches(regexForFIO))
             throw new IllegalArgumentException("Имя введено некорректно");
         this.firstName = firstName;
     }
@@ -75,7 +77,7 @@ public class Person implements Serializable {
 
     /** Новое значение в поле Отчество*/
     public void setMiddleName(String middleName) {
-        if (!middleName.matches("^[a-zA-Zа-яА-ЯёЁ]+$"))
+        if (!middleName.matches(regexForFIO))
             throw new IllegalArgumentException("Отчество введено некорректно");
         this.middleName = middleName;
     }
@@ -119,6 +121,7 @@ public class Person implements Serializable {
         this.payment = payment;
     }
 
+    @Override // toString надо переопределять, потому что все объекты наследуются от Object, который содержит этот метод
     /** Вывод всех данных об абоненте в строку*/
     public String toString() {
         return "Фамилия : " + getSecondName() + " | " + "Имя : " + getFirstName() +
